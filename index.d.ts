@@ -179,6 +179,13 @@ declare module "react-native-circular-progress" {
     }) => React.ReactNode;
 
     /**
+     * Offset value to prevent clipping of the tip of the progress circle
+     *
+     * @type {number | Animated.Value}
+     */
+    capOffset?: number | Animated.Value;
+
+    /**
      * Use dashed type for tint/progress line
      *
      * @type { width: number; gap: number }

@@ -41,6 +41,7 @@ export default class CircularProgress extends React.PureComponent {
       childrenContainerStyle,
       padding,
       renderCap,
+      capOffset,
       dashedBackground,
       dashedTint
     } = this.props;
@@ -70,7 +71,7 @@ export default class CircularProgress extends React.PureComponent {
       radius,
       currentFillAngle
     );
-    const cap = this.props.renderCap ? this.props.renderCap({ center: coordinate }) : null;
+    const cap = renderCap ? renderCap({ center: coordinate }) : null;
 
     const offset = size - maxWidthCircle * 2;
 
@@ -99,9 +100,17 @@ export default class CircularProgress extends React.PureComponent {
       .map(value => parseInt(value))
       : null;
 
+    
+    const svgProps = {};
+    if (capOffset) {
+      svgProps['viewBox'] = `-${capOffset} 0 ${size + padding + capOffset * 2} ${
+        circleHeight + padding
+      }`;
+    }
+
     return (
       <View style={style}>
-        <Svg width={size + padding} height={circleHeight + padding}>
+        <Svg width={size + padding} height={circleHeight + padding} {...svgProps}>
           <G rotation={rotation} originX={(size + padding) / 2} originY={(size + padding) / 2}>
             {backgroundColor && (
               <Path
@@ -138,6 +147,10 @@ CircularProgress.propTypes = {
     PropTypes.number,
     PropTypes.instanceOf(Animated.Value),
   ]).isRequired,
+  circleHeight: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.instanceOf(Animated.Value),
+  ]),
   fill: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   backgroundWidth: PropTypes.number,
@@ -151,6 +164,10 @@ CircularProgress.propTypes = {
   childrenContainerStyle: PropTypes.object,
   padding: PropTypes.number,
   renderCap: PropTypes.func,
+  capOffset: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.instanceOf(Animated.Value),
+  ]),
   dashedBackground: PropTypes.object,
   dashedTint: PropTypes.object
 };
